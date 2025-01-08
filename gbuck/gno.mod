@@ -1,0 +1,1 @@
+module gno.land/r/gnome_arcade/gbuck
