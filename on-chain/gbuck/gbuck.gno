@@ -16,11 +16,25 @@ var (
 	Token, privateLedger = grc20.NewToken("Gnome Arcade Bucks", "gbuck", 0)
 	UserTeller           = Token.CallerTeller()
 	Ownable              = ownable.NewWithAddress("g1znmyjuduhhactgzeew5ea26z5wzlt6jyc89k5u") // Arcade admin
+	arcadeAdmin          = pusers.AddressOrName("g1znmyjuduhhactgzeew5ea26z5wzlt6jyc89k5u")
+	realmAddress         = std.CurrentRealm().Addr()
 )
 
 func init() {
 	privateLedger.Mint(Ownable.Owner(), 1_000_000)
 	grc20reg.Register(Token.Getter(), "")
+}
+
+func PlaceWager(from pusers.AddressOrName, amount uint64) {
+	fromAddr := users.Resolve(from)
+	toAddr := users.Resolve(arcadeAdmin)
+	checkErr(UserTeller.TransferFrom(fromAddr, toAddr, amount))
+}
+
+func TakeWin(to pusers.AddressOrName, amount uint64) {
+	fromAddr := users.Resolve(arcadeAdmin)
+	toAddr := users.Resolve(to)
+	checkErr(UserTeller.TransferFrom(fromAddr, toAddr, amount))
 }
 
 func TotalSupply() uint64 {
@@ -35,10 +49,6 @@ func BalanceOf(owner pusers.AddressOrName) uint64 {
 func Transfer(to pusers.AddressOrName, amount uint64) {
 	toAddr := users.Resolve(to)
 	checkErr(UserTeller.Transfer(toAddr, amount))
-}
-
-func ApproveArcade(amount uint64) {
-	checkErr(UserTeller.Approve(Ownable.Owner(), amount))
 }
 
 func TransferFrom(from, to pusers.AddressOrName, amount uint64) {
@@ -71,6 +81,11 @@ func Burn(from pusers.AddressOrName, amount uint64) {
 	checkErr(privateLedger.Burn(fromAddr, amount))
 }
 
+func Approve(spender pusers.AddressOrName, amount uint64) {
+	spenderAddr := users.Resolve(spender)
+	checkErr(UserTeller.Approve(spenderAddr, amount))
+}
+
 func Render(path string) string {
 	parts := strings.Split(path, "/")
 	c := len(parts)
@@ -86,6 +101,10 @@ func Render(path string) string {
 	default:
 		return "404\n"
 	}
+}
+
+func GetRealmAddress() string {
+	return realmAddress.String()
 }
 
 func checkErr(err error) {
