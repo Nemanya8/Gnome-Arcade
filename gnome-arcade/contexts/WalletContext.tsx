@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { AdenaSDK, AdenaWalletProvider } from '@adena-wallet/sdk';
 
 const walletProvider = new AdenaWalletProvider();
@@ -44,11 +44,11 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const loadFromLocalStorage = () => {
     const savedConnected = localStorage.getItem('walletConnected');
     const savedAccount = localStorage.getItem('walletAccount');
-    
+
     if (savedConnected) {
       setIsConnected(JSON.parse(savedConnected));
     }
-    
+
     if (savedAccount) {
       setAccount(JSON.parse(savedAccount));
     }
@@ -114,4 +114,3 @@ export const useWallet = () => {
   }
   return context;
 };
-

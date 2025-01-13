@@ -122,11 +122,11 @@ export default function Arcade() {
               <div className="space-y-4">
                 <RealmLink 
                   title="Coin Flip" 
-                  url="https://gno.land/gnome_arcade/coin_flip" 
+                  url="https://gno.land/r/gnome_arcade/coin_flip" 
                 />
                 <RealmLink 
                   title="GBuck" 
-                  url="https://gno.land/gnome_arcade/gbuck" 
+                  url="https://gno.land/r/gnome_arcade/gbuck" 
                 />
               </div>
             </CardContent>

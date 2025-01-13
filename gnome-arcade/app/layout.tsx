@@ -2,6 +2,14 @@ import { WalletProvider } from '@/contexts/WalletContext';
 import './globals.css';
 import AppHeader from '@/components/AppHeader';
 
+export const metadata = {
+  title: 'Gnome Arcade',
+  description: 'Arcade games based on gno.land chain',
+  icons: {
+    icon: '/gnome-logo.svg',
+  },
+};
+
 export default function RootLayout({
   children,
 }: {
