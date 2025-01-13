@@ -26,7 +26,7 @@ interface WalletContextType {
   isLoading: boolean;
   account: AccountInfo | null;
   connect: () => Promise<boolean>;
-  disconnect: () => void;
+  disconnect: () => Promise<void>;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -36,14 +36,33 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [isLoading, setIsLoading] = useState(false);
   const [account, setAccount] = useState<AccountInfo | null>(null);
 
+  const saveToLocalStorage = (connected: boolean, accountData: AccountInfo | null) => {
+    localStorage.setItem('walletConnected', JSON.stringify(connected));
+    localStorage.setItem('walletAccount', JSON.stringify(accountData));
+  };
+
+  const loadFromLocalStorage = () => {
+    const savedConnected = localStorage.getItem('walletConnected');
+    const savedAccount = localStorage.getItem('walletAccount');
+    
+    if (savedConnected) {
+      setIsConnected(JSON.parse(savedConnected));
+    }
+    
+    if (savedAccount) {
+      setAccount(JSON.parse(savedAccount));
+    }
+  };
+
   const connect = async (): Promise<boolean> => {
     setIsLoading(true);
     try {
       await adenaSDK.connectWallet();
-      setIsConnected(true);
       const accountResponse = await adenaSDK.getAccount();
       if (accountResponse.data) {
+        setIsConnected(true);
         setAccount(accountResponse.data);
+        saveToLocalStorage(true, accountResponse.data);
       }
       setIsLoading(false);
       return true;
@@ -54,20 +73,27 @@ export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
-  const disconnect = () => {
-    adenaSDK.disconnectWallet();
-    setIsConnected(false);
-    setAccount(null);
+  const disconnect = async (): Promise<void> => {
+    try {
+      await adenaSDK.disconnectWallet();
+      setIsConnected(false);
+      setAccount(null);
+      saveToLocalStorage(false, null);
+    } catch (error) {
+      console.error('Failed to disconnect wallet:', error);
+    }
   };
 
   useEffect(() => {
     const checkConnection = async () => {
+      loadFromLocalStorage();
       const connected = await adenaSDK.getConnectionState();
       if (connected === 2) {
-        setIsConnected(true);
         const accountResponse = await adenaSDK.getAccount();
         if (accountResponse.data) {
+          setIsConnected(true);
           setAccount(accountResponse.data);
+          saveToLocalStorage(true, accountResponse.data);
         }
       }
     };
