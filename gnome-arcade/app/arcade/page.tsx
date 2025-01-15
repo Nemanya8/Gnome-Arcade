@@ -15,12 +15,6 @@ const GAMES_PER_PAGE = 6
 
 const dummyGames = [
   { title: "Coin Flip", description: "Test your luck with a simple coin flip game!", imageSrc: "/cointoss.png", slug: "coinflip" },
-  { title: "Dice Roll", description: "Roll the dice and see what fate has in store!", imageSrc: "/cointoss.png", slug: "diceroll" },
-  { title: "Slot Machine", description: "Spin the reels and hit the jackpot!", imageSrc: "/cointoss.png", slug: "slotmachine" },
-  { title: "Blackjack", description: "Beat the dealer in this classic card game!", imageSrc: "/cointoss.png", slug: "blackjack" },
-  { title: "Roulette", description: "Place your bets and watch the wheel spin!", imageSrc: "/cointoss.png", slug: "roulette" },
-  { title: "Poker", description: "Bluff your way to victory in Texas Hold'em!", imageSrc: "/cointoss.png", slug: "poker" },
-  { title: "Baccarat", description: "Predict the winning hand in this elegant game!", imageSrc: "/cointoss.png", slug: "baccarat" },
 ]
 
 export default function Arcade() {
@@ -82,7 +76,7 @@ export default function Arcade() {
               <Separator className="my-2" />
             </CardHeader>
             <CardContent className="flex-grow flex flex-col">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-grow">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-fr">
                 {gamesForCurrentPage.map((game, index) => (
                   <GameCard key={index} {...game} />
                 ))}
@@ -112,10 +106,30 @@ export default function Arcade() {
           </Card>
         </div>
 
-        <div className="w-[30%] flex flex-col">
+        <div className="w-[30%] flex flex-col gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">Actions</CardTitle>
+              <Separator className="my-2" />
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col gap-4">
+                <Button className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold">
+                  Get GBucks
+                </Button>
+                <Button className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold">
+                  My Balance
+                </Button>
+                <Button className="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold">
+                  Redeem Rewards
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
           <Card className="flex-grow">
             <CardHeader>
-              <CardTitle className="text-3xl font-bold">Realms</CardTitle>
+              <CardTitle className="text-2xl font-bold">Realms</CardTitle>
               <Separator className="my-2" />
             </CardHeader>
             <CardContent>
@@ -136,3 +150,4 @@ export default function Arcade() {
     </div>
   )
 }
+

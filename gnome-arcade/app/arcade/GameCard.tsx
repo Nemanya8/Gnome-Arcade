@@ -1,7 +1,7 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 interface GameCardProps {
   title: string
@@ -14,11 +14,11 @@ export function GameCard({ title, description, imageSrc, slug }: GameCardProps) 
   const router = useRouter()
 
   return (
-    <Card className="w-full max-w-[250px] flex flex-col">
-      <CardHeader className="p-0">
-        <div className="w-full h-32 relative">
+    <Card className="w-full h-[300px] flex flex-col">
+      <CardHeader className="p-0 h-32">
+        <div className="w-full h-full relative">
           <Image
-            src={imageSrc}
+            src={imageSrc || "/placeholder.svg"}
             alt={title}
             layout="fill"
             objectFit="cover"
@@ -26,9 +26,9 @@ export function GameCard({ title, description, imageSrc, slug }: GameCardProps) 
           />
         </div>
       </CardHeader>
-      <CardContent className="p-4 flex-grow">
-        <CardTitle className="text-lg">{title}</CardTitle>
-        <CardDescription className="mt-2 text-sm line-clamp-3">{description}</CardDescription>
+      <CardContent className="p-4 flex-grow overflow-hidden">
+        <CardTitle className="text-lg mb-2">{title}</CardTitle>
+        <CardDescription className="text-sm line-clamp-3">{description}</CardDescription>
       </CardContent>
       <CardFooter className="p-4">
         <Button 
